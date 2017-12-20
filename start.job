@@ -1,0 +1,45 @@
+#!/bin/bash
+#----------------------------------------------------
+# Sample SLURM job script
+#   for TACC Stampede2 KNL nodes
+#
+#   *** MPI Job on Normal Queue ***
+# 
+# Last revised: 27 Jun 2017
+#
+# Notes:
+#
+#   -- Launch this script by executing
+#      "sbatch knl.mpi.slurm" on Stampede2 login node.
+#
+#   -- Use ibrun to launch MPI codes on TACC systems.
+#      Do not use mpirun or mpiexec.
+#
+#   -- Max recommended MPI tasks per KNL node: 64-68
+#      (start small, increase gradually).
+#
+#   -- If you're running out of memory, try running
+#      fewer tasks per node to give each task more memory.
+#
+#----------------------------------------------------
+
+#SBATCH -J floor1e1        # Job name
+#SBATCH -o floor1e1.o%j    # Name of stdout output file
+#SBATCH -e floor1e1.e%j    # Name of stderr error file
+#SBATCH -p normal          # Queue (partition) name
+#SBATCH -N 1               # Total # of nodes 
+#SBATCH -n 256             # Total # of mpi tasks
+#SBATCH -t 10:30:00        # Run time (hh:mm:ss)
+#SBATCH --mail-user=cekolb@ncsu.edu
+#SBATCH --mail-type=all    # Send email at begin and end of job
+#SBATCH -A TG-AST090085       # Allocation name (req'd if you have more than 1)
+
+# Other commands must follow all #SBATCH directives...
+
+module list
+pwd
+date
+
+# Launch MPI code... 
+
+ibrun ./vhone        # Use ibrun instead of mpirun or mpiexec

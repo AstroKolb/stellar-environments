@@ -1,0 +1,13 @@
+ $hinput
+     step    = 1 
+     rstrt   = 'no'
+    ,prefix  = 'test7'
+!    ,format  = 'netcdf'
+    ,ncycend = 50 
+    ,ndump   = 1000000
+    ,nprin   = 2 
+    ,nmovie  = 2000000
+    ,endtime = 5.0e+99
+    ,tprin   = 5.0e+99
+    ,tmovie  = 5.0e+99
+ $end

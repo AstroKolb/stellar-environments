@@ -1,0 +1,12 @@
+&hicons				!
+  scale = 'Rsun'
+  GMP   = 10.0      ! * GM
+  GMS   = 20.0      ! * GM
+  sep   = 5.00e+04  ! * scale
+  x1min = 1.00e+04  ! * scale
+  x1max = 2.50e+05  ! * scale
+  x2max = 5.00e+01  ! * sep + rcm
+  gam   = 1.666666
+  LumP  = 5.53e+05
+  dmP   = 1.00e-07
+  TmpP  = 3.50e+03 /
