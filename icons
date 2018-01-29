@@ -1,12 +1,38 @@
-&hicons				!
-  scale = 'Rsun'
-  GMP   = 10.0      ! * GM
-  GMS   = 20.0      ! * GM
-  sep   = 5.00e+04  ! * scale
-  x1min = 1.00e+04  ! * scale
-  x1max = 2.50e+05  ! * scale
-  x2max = 5.00e+01  ! * sep + rcm
-  gam   = 1.666666
-  LumP  = 5.53e+05
-  dmP   = 1.00e-07
-  TmpP  = 3.50e+03 /
+
+
+! general input parameters
+prefix = 'model02'
+step   = 1
+
+gam    = 1.66666     
+TmpP   = 3.50e+03
+T_flr  = 1.00e+02    ! [K]
+
+dmP    = 1.00e-06    ! [Msun/yr]
+dmscal = 1.0         ! adjust mdot (1D only)
+
+
+! binary properties
+GMP    = 1.00e+01    ! [Msun]
+GMS    = 1.00e+01    ! [Msun]
+sep    = 1.19e+04    ! [Rsun]
+
+
+! grid dimensions
+x0min  = 5.00e+02    ! [Rsun]
+x1min  = 1.00e+03    ! [Rsun]
+x1max  = 5.00e+00    ! [sep]
+x2max  = 5.00e+01    ! [sep]
+
+
+! acceleration parameters
+radlaw = 'lin'
+Rstar  = 5.00e+02    ! [Rsun]
+
+rad1   = 1.00e+00    ! [Rstar]
+rad2   = 8.00e+00    ! [Rstar]
+rad3   = 1.50e+01    ! [Rstar]
+
+kap1   = 0.0
+kap2   = 1.0
+kap3   = 1.5
