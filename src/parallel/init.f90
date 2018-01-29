@@ -198,7 +198,7 @@ write(*,*) 'asdf'
 ! input data is scaled to a radius of 1.0, age of 0.5, ambient density of 1.0
 
 if (step == 1) then
-   open(27, file='wind25.dat')
+   open(27, file='src/assets/wind25.dat')
    do n = 1, 1024
       read(27,*) rss(n), dss(n), pss(n), uss(n), css(n)
    enddo

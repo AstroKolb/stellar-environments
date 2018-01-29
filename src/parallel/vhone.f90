@@ -184,6 +184,7 @@ call MPI_BCAST( indat_chrs, 52, MPI_CHARACTER, 0, MPI_COMM_ROW, mpierr )
  prefix = indat_chrs(3:52)
 
 
+if (.false.) then
  ! load in icons
 if (jcol==0) then
   open (unit=17, file='icons', status='old', form='formatted')
@@ -215,6 +216,7 @@ call MPI_BCAST( icons_rels, 10, VH1_DATATYPE, 0, MPI_COMM_ROW, mpierr )
   TmpP  = icons_rels(10)
 call MPI_BCAST( icons_chrs, 52, MPI_CHARACTER, 0, MPI_COMM_ROW, mpierr )
   scale = icons_chrs
+endif
 
 call read_icons
 

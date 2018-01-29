@@ -1,7 +1,7 @@
 import os
 
 # open icons file
-icons = open('icons2')
+icons = open('icons')
 
 
 # determine prefix
@@ -12,4 +12,4 @@ for LINE in icons:
 
 
 # copy icons file
-os.system('cp -p icons2 output/'+prefix+'.icons')
+os.system('cp -p icons output/'+prefix+'.icons')

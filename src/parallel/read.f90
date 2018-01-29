@@ -29,7 +29,7 @@ implicit none
    if (jcol == 0) then
       line = 0
       ios  = 0
-      open(unit=15, file='icons2', status='old', form='formatted')
+      open(unit=15, file='icons', status='old', form='formatted')
          do while (ios == 0)
             read(15, '(A)', iostat=ios) buffer
             if (ios == 0) then
