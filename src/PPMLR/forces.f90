@@ -26,8 +26,8 @@ if (step == 1) then
             rad = xf(n)
             rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
 
-            grav(n) = - GMP / xf(n)**2 * c(n)                           !&		! primary
-                     ! - GMS / rs1n2**3 * (rad-sep*sth*cph)   			   !&		! secondary
+            grav(n) = - GMP / xf(n)**2 * c(n)                           &		! primary
+                      - GMS / rs1n2**3 * (rad-sep*sth*cph)   			   !&		! secondary
                      ! + LumP * exp(-c(n)) / (4.0*pi*3.0e+10*xf(n)**2)   		! radiation
             
             fict(n) = + (w(n)**2+v(n)**2)/xf(n)                         &		! grid
@@ -43,8 +43,8 @@ if (step == 1) then
             rad = xf(n)
             rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
 
-            grav(n) = - GMP / xf(n)**2 * c(n)                           !&		! primary
-                     ! - GMS / rs1n2**3 * (rad+sep*sth*cph)            	!&		! secondary
+            grav(n) = - GMP / xf(n)**2 * c(n)                           &		! primary
+                      - GMS / rs1n2**3 * (rad+sep*sth*cph)            	!&		! secondary
                      ! + LumP * exp(-c(n)) / (4.0*pi*3.0e+10*xf(n)**2)   		! radiation
             
             fict(n) = + (w(n)**2+v(n)**2)/xf(n)                         &		! grid
@@ -64,14 +64,14 @@ if (step == 1) then
             rad = radius
             rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
 
-            !grav(n) = + GMS / rs1n2**3 * sep*cth*cph
+            grav(n) = + GMS / rs1n2**3 * sep*cth*cph
             
             fict(n) = + v(n)**2*cth/(radius*sth) - u(n)*w(n)/radius     &
                       + omega**2*radius*sth*cth                         &
                       - omega**2*rcm*cth*cph                            &
                       + 2.0*omega*cth*v(n)
 
-            grav(n) = 0.0
+            !grav(n) = 0.0
             !fict(n) = v(n)**2*cth/(radius*sth) - u(n)*w(n)/radius
          enddo
       else
@@ -81,14 +81,14 @@ if (step == 1) then
             rad = radius
             rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
 
-            !grav(n) = - GMS / rs1n2**3 * sep*cth*cph
+            grav(n) = - GMS / rs1n2**3 * sep*cth*cph
             
             fict(n) = + v(n)**2*cth/(radius*sth) - u(n)*w(n)/radius     &
                       - omega**2*radius*sph**2*cth*sth                  &
                       + omega**2*rcm*cth*cph                            &
                       - 2.0*omega*(cph*w(n)-sph*sth*v(n))
 
-            grav(n) = 0.0
+            !grav(n) = 0.0
             !fict(n) = v(n)**2*cth/(radius*sth) - u(n)*w(n)/radius
          enddo
       endif
@@ -100,12 +100,12 @@ if (step == 1) then
             rad = radius / sth
             rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
 
-            !grav(n) = - GMS / rs1n2**3 * sep*sph
+            grav(n) = - GMS / rs1n2**3 * sep*sph
             fict(n) = - u(n)*w(n)/radius*cth - u(n)*v(n)/radius*sth     &
                       + omega**2*rcm*sph                                &
                       - 2.0*omega*(sth*v(n)+cth*w(n))
 
-            grav(n) = 0.0
+            !grav(n) = 0.0
             !fict(n) = u(n)*w(n)/radius*cth - u(n)*v(n)/radius*sth
          enddo
       else
@@ -115,14 +115,14 @@ if (step == 1) then
             rad = radius / sth
             rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
 
-            !grav(n) = + GMS / rs1n2**3 * sep*sph
+            grav(n) = + GMS / rs1n2**3 * sep*sph
             
             fict(n) = - u(n)*w(n)/radius*cth - u(n)*v(n)/radius*sth     &
                       - omega**2*radius*cph*sph                         &
                       - omega**2*rcm*sph                                &
                       - 2.0*omega*(sth*sph*w(n)-cth*sph*v(n)) 
 
-            grav(n) = 0.0
+            !grav(n) = 0.0
             !fict(n) = u(n)*w(n)/radius*cth - u(n)*v(n)/radius*sth
          enddo
       endif
