@@ -60,6 +60,9 @@ real, dimension(3) :: indat_rels
 real, dimension(10) :: icons_rels
 real :: start_time, end_time, run_time, zones
 
+real, dimension(imax, jmax/pey, kmax/pez) :: accrete
+integer :: iacc, jacc, kacc, jj, kk
+
 
 
 namelist / hinput / step, rstrt, prefix, ncycend, ndump, nprin, nmovie, endtime, tprin, tmovie
@@ -268,7 +271,28 @@ call corner
 call boundaryYsetup
 call boundaryZsetup
 
-write(*,*) 'made it..'
+! determine accretion zone
+iacc = 1
+do while (zxc(iacc) < sep)
+   iacc = iacc + 1
+enddo
+jacc = jmax/2
+kacc = kmax/2
+
+! set up accretion array
+do k = 1, ks
+   kk = mypez*ks+k
+   do j = 1, js
+      jj = mypey*js+j
+      do i = 1, imax
+         accrete(i,j,k) = 0.0
+         if (yin) then
+            if ((i-iacc)**2 + (jj-jacc)**2 + (kk-kacc)**2 < 9) accrete(i,j,k) = 1.0
+         endif
+      enddo
+   enddo
+enddo
+
 if(mype == 0) then
   !start_time = MPI_WTIME()
   start_cycl = ncycle
@@ -324,6 +348,19 @@ do while (ncycle < ncycend)
   endif
 
 ! =============================================================
+   if (step == 1) then
+      do k = 1, ks
+         do j = 1, js
+            do i = 1, imax
+               if (accrete(i,j,k) == 1.0) then
+                  zro(i,j,k) = 0.001*zro(i,j,k)
+                  zpr(i,j,k) = 0.001*zpr(i,j,k)
+               endif
+            enddo
+         enddo
+      enddo
+   endif
+
 ! Find maximum radius of shock and terminate if it gets close to the edge
   rshockmax = 0.0
   do k = 1, ks
