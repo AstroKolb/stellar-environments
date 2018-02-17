@@ -47,6 +47,7 @@ character(len=4)  :: tmp4
 character(len=2)  :: rstrt 
 character(len=8)  :: todayis
 character(len=MPI_MAX_PROCESSOR_NAME) :: myname
+character(len=50) :: accfile
 
 integer :: i, j, k, nfile_start
 integer :: ncycend, nprin, ndump, nmovie, tmpcyc, mpierr, yy
@@ -62,6 +63,7 @@ real :: start_time, end_time, run_time, zones
 
 real, dimension(imax, jmax/pey, kmax/pez) :: accrete
 integer :: iacc, jacc, kacc, jj, kk
+real :: accrec
 
 
 
@@ -293,6 +295,10 @@ do k = 1, ks
    enddo
 enddo
 
+! open accretion data file
+accfile = trim(prefix) // '_accretion.dat'
+open(unit=7, file=accfile, form='formatted')
+
 if(mype == 0) then
   !start_time = MPI_WTIME()
   start_cycl = ncycle
@@ -348,36 +354,44 @@ do while (ncycle < ncycend)
   endif
 
 ! =============================================================
+
    if (step == 1) then
+      accrec = 0.0
       do k = 1, ks
          do j = 1, js
             do i = 1, imax
                if (accrete(i,j,k) == 1.0) then
-                  zro(i,j,k) = 0.001*zro(i,j,k)
-                  zpr(i,j,k) = 0.001*zpr(i,j,k)
+                  accrec = accrec + (1.0-1.0e-05)*zro(i,j,k)
+                  zro(i,j,k) = 1.0e-05*zro(i,j,k)
+                  zpr(i,j,k) = 1.0e-05*zpr(i,j,k)
                endif
             enddo
          enddo
       enddo
+      call MPI_ALLREDUCE(accrec, accrec, 1, VH1_DATATYPE, MPI_SUM, MPI_COMM_WORLD, mpierr)
+      if (mype == 0) write(7,*) time, accrec
    endif
 
 ! Find maximum radius of shock and terminate if it gets close to the edge
-  rshockmax = 0.0
-  do k = 1, ks
-    do j = 1, js
-      i = imax
-      do while (zux(i,j,k) < 1e3)
-        i = i - 1
+   xexpand = 0.0
+   if (step == 3) then
+      rshockmax = 0.0
+      do k = 1, ks
+         do j = 1, js
+            i = imax
+            do while (zux(i,j,k) < 1e3)
+               i = i - 1
+            enddo
+            rshockmax = max(rshockmax,zxa(i))
+         enddo
       enddo
-      rshockmax = max(rshockmax,zxa(i))
-    enddo
-  enddo
-  call MPI_ALLREDUCE( rshockmax, Rs_max, 1, VH1_DATATYPE, MPI_MAX, MPI_COMM_WORLD, mpierr )
-  if (Rs_max > zxa(imax-6) .and. step == 3) then
-    xexpand = 0.7*zdx(imax)/zxa(imax)
-  else
-    xexpand = 0.0
-  endif
+      call MPI_ALLREDUCE( rshockmax, Rs_max, 1, VH1_DATATYPE, MPI_MAX, MPI_COMM_WORLD, mpierr )
+      if (Rs_max > zxa(imax-6) .and. step == 3) then
+         xexpand = 0.7*zdx(imax)/zxa(imax)
+      else
+         xexpand = 0.0
+      endif
+   endif
 ! =============================================================
 
 ! Alternate sweeps to approximate 2nd order operator splitting
@@ -386,6 +400,18 @@ do while (ncycle < ncycend)
   call sweepz
   call sweepy
   call sweepx2(xexpand)
+
+  ! basic cooling function
+  !do k = 1, ks
+  !  do j = 1, js
+  !    do i = 1, imax
+  !      if (zpr(i,j,k) / zro(i,j,k) * mp / kB > T_flr) then
+  !        zpr(i,j,k) = zpr(i,j,k) - gamm*(zro(i,j,k)/mp)**2*1e-56*(2.0*dt)
+  !        zpr(i,j,k) = max(zpr(i,j,k), T_flr*zro(i,j,k)*kB/mp)
+  !      endif
+  !    enddo
+  !  enddo
+  !enddo
 
   time  = time  + 2.0*dt
   timep = timep + 2.0*dt
