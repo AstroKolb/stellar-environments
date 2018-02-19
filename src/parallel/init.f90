@@ -162,7 +162,7 @@ call grid(kmax,zmin,zmax,zza,zzc,zdz,0.00)
 !=======================================================================
 ! initialize grid:
 
-call initialize_noise
+!call initialize_noise     ! unused, rand() seems to cause an issue on stampede
 call boundaryRsetup
 call boundaryR
 
