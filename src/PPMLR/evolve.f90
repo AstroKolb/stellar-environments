@@ -79,7 +79,8 @@ do n = nmin-3, nmax+3
               + 0.5d0*dt*(grav0(n)+fict0(n)+grav1(n)+fict1(n))
 
   e(n) = e(n) - dtbdm(n)*(amid(n+1)*upmid(n+1) - amid(n)*upmid(n)) &
-              + 0.25*dt*(uold(n) + u(n)) * (grav0(n)+fict0(n)+grav1(n)+fict1(n))
+              + 0.25*dt*(uold(n) + u(n)) * (grav0(n)+fict0(n)+grav1(n)+fict1(n)) !&
+!              - (r(n)/mp)**2*1.0e-22*dt
 enddo
 
 do n = nmin-3, nmax+3
