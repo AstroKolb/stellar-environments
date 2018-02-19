@@ -63,7 +63,7 @@ real :: start_time, end_time, run_time, zones
 
 real, dimension(imax, jmax/pey, kmax/pez) :: accrete
 integer :: iacc, jacc, kacc, jj, kk
-real :: accrec
+real :: accrec, accrecr
 
 
 
@@ -296,26 +296,28 @@ do k = 1, ks
 enddo
 
 ! open accretion data file
-accfile = trim(prefix) // '_accretion.dat'
-open(unit=7, file=accfile, form='formatted')
+if (mype == 0) then
+   accfile = trim(prefix) // '_accretion.dat'
+   open(unit=7, file=accfile, form='formatted')
+endif
 
 if(mype == 0) then
-  !start_time = MPI_WTIME()
-  start_cycl = ncycle
-  write(8,*) 'Starting on cycle number ',ncycle
+   !start_time = MPI_WTIME()
+   start_cycl = ncycle
+   write(8,*) 'Starting on cycle number ',ncycle
 endif
 
 
 if (step == 1) then
-  ncycend = 1000000
-  nprin   = 1000000
-  endtime = 2.00 * opd
-  tprin   = 0.20 * opd
+   ncycend = 1000000
+   nprin   = 1000000
+   endtime = 3.00 * opd
+   tprin   = 0.10 * opd
 else if (step == 2) then
-  ncycend = 1000000
-  nprin   = 1000000
-  endtime = 10.0 * opd
-  tprin   = 00.5 * opd
+   ncycend = 1000000
+   nprin   = 1000000
+   endtime = 10.0 * opd
+   tprin   = 00.5 * opd
 else
 
 
@@ -368,8 +370,8 @@ do while (ncycle < ncycend)
             enddo
          enddo
       enddo
-      call MPI_ALLREDUCE(accrec, accrec, 1, VH1_DATATYPE, MPI_SUM, MPI_COMM_WORLD, mpierr)
-      if (mype == 0) write(7,*) time, accrec
+      call MPI_ALLREDUCE(accrec, accrecr, 1, VH1_DATATYPE, MPI_SUM, MPI_COMM_WORLD, mpierr)
+      if (mype == 0) write(7,*) time, accrecr
    endif
 
 ! Find maximum radius of shock and terminate if it gets close to the edge
