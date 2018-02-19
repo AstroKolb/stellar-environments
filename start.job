@@ -23,23 +23,24 @@
 #
 #----------------------------------------------------
 
-#SBATCH -J floor1e1        # Job name
-#SBATCH -o floor1e1.o%j    # Name of stdout output file
-#SBATCH -e floor1e1.e%j    # Name of stderr error file
-#SBATCH -p normal          # Queue (partition) name
-#SBATCH -N 1               # Total # of nodes 
-#SBATCH -n 256             # Total # of mpi tasks
-#SBATCH -t 10:30:00        # Run time (hh:mm:ss)
+#SBATCH -J jobname                     # Job name
+#SBATCH -o jobname.o%j                 # Name of stdout output file
+#SBATCH -e jobname.e%j                 # Name of stderr error file
+#SBATCH -p normal                      # Queue (partition) name
+#SBATCH -N 8                           # Total # of nodes 
+#SBATCH -n 512                         # Total # of mpi tasks
+#SBATCH -t 10:30:00                    # Run time (hh:mm:ss)
 #SBATCH --mail-user=cekolb@ncsu.edu
-#SBATCH --mail-type=all    # Send email at begin and end of job
-#SBATCH -A TG-AST090085       # Allocation name (req'd if you have more than 1)
+#SBATCH --mail-type=all                # Send email at begin and end of job
+#SBATCH -A TG-AST090085                # Allocation name (req'd if you have more than 1)
 
 # Other commands must follow all #SBATCH directives...
 
 module list
 pwd
 date
+python setup.py                        # create icons, etc.
 
 # Launch MPI code... 
 
-ibrun ./vhone        # Use ibrun instead of mpirun or mpiexec
+ibrun ./vhone                          # Use ibrun instead of mpirun or mpiexec
