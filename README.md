@@ -1,6 +1,8 @@
 # stellar-environments
 
 to do    :: vhone.f90 - add Dr. B's cooling algorithm
+            vhone.f90 - fix accretion issues
+
 
 02/19/18 :: updated vhone.f90
              - shock finding algorithm only executes in stage 3
