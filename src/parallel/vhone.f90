@@ -329,7 +329,7 @@ endif
 do while (ncycle < ncycend)
 
   if (step < 3) then
-    if (mype == 0) write(*,*) 'STEP = ', ncycle, dt/opd, time/opd
+    if (mype == 0) write(*,*) 'STEP = ', ncycle, dt/opd, time/opd, zro(1,1,1)
   else
     if (mype == 0) write(*,*) 'STEP = ', ncycle, zxc(i) / x2max
   endif
@@ -363,7 +363,8 @@ do while (ncycle < ncycend)
          do j = 1, js
             do i = 1, imax
                if (accrete(i,j,k) == 1.0) then
-                  accrec = accrec + (1.0-1.0e-05)*zro(i,j,k)
+                  dv = zxc(i)**2*sin(zyc(mypey*js+j))*zdx(i)*zdy(j)*zdz(k)
+                  accrec = accrec + (1.0-1.0e-05)*zro(i,j,k)*dv/(2.0*dt)
                   zro(i,j,k) = 1.0e-05*zro(i,j,k)
                   zpr(i,j,k) = 1.0e-05*zpr(i,j,k)
                endif
@@ -402,18 +403,6 @@ do while (ncycle < ncycend)
   call sweepz
   call sweepy
   call sweepx2(xexpand)
-
-  ! basic cooling function
-  !do k = 1, ks
-  !  do j = 1, js
-  !    do i = 1, imax
-  !      if (zpr(i,j,k) / zro(i,j,k) * mp / kB > T_flr) then
-  !        zpr(i,j,k) = zpr(i,j,k) - gamm*(zro(i,j,k)/mp)**2*1e-56*(2.0*dt)
-  !        zpr(i,j,k) = max(zpr(i,j,k), T_flr*zro(i,j,k)*kB/mp)
-  !      endif
-  !    enddo
-  !  enddo
-  !enddo
 
   time  = time  + 2.0*dt
   timep = timep + 2.0*dt
