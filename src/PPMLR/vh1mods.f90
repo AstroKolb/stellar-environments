@@ -44,7 +44,7 @@ logical :: brk
  integer :: step
  real :: x1min, x1max, x2min, x2max, Z1, Z2, Z3
  real :: rad1, rad2, rad3, kap1, kap2, kap3
- real :: p_flr, T_flr, dmscal, x0min
+ real :: p_flr, T_flr, dmscal, x0min, minrad
 
  ! step 2/3 parameters
  integer                                 :: amax

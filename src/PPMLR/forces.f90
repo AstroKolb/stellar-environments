@@ -24,7 +24,7 @@ if (step == 1) then
       if (yin) then
          do n = nmin-4, nmax+5
             rad = xf(n)
-            rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = - GMP / xf(n)**2 * c(n)                           &		! primary
                       - GMS / rs1n2**3 * (rad-sep*sth*cph)   			   !&		! secondary
@@ -41,7 +41,7 @@ if (step == 1) then
       else
          do n = nmin-4, nmax+5
             rad = xf(n)
-            rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = - GMP / xf(n)**2 * c(n)                           &		! primary
                       - GMS / rs1n2**3 * (rad+sep*sth*cph)            	!&		! secondary
@@ -62,7 +62,7 @@ if (step == 1) then
             sth = sin(xf(n))
             cth = cos(xf(n))
             rad = radius
-            rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = + GMS / rs1n2**3 * sep*cth*cph
             
@@ -79,7 +79,7 @@ if (step == 1) then
             sth = sin(xf(n))
             cth = cos(xf(n))
             rad = radius
-            rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = - GMS / rs1n2**3 * sep*cth*cph
             
@@ -98,7 +98,7 @@ if (step == 1) then
             sph = sin(xf(n))
             cph = cos(xf(n))
             rad = radius / sth
-            rs1n2 = (rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 - 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = - GMS / rs1n2**3 * sep*sph
             fict(n) = - u(n)*w(n)/radius*cth - u(n)*v(n)/radius*sth     &
@@ -113,7 +113,7 @@ if (step == 1) then
             sph = sin(xf(n))
             cph = cos(xf(n))
             rad = radius / sth
-            rs1n2 = (rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5
+            rs1n2 = max(minrad,(rad**2 + sep**2 + 2.0*rad*sep*sth*cph)**0.5)
 
             grav(n) = + GMS / rs1n2**3 * sep*sph
             
