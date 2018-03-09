@@ -155,7 +155,7 @@ else
 endif
 
 
-call grid(imax,xmin,xmax,zxa,zxc,zdx,0.00)
+call grid(imax,xmin,xmax,zxa,zxc,zdx,zoom)
 call grid(jmax,ymin,ymax,zya,zyc,zdy,0.00)
 call grid(kmax,zmin,zmax,zza,zzc,zdz,0.00)
 
@@ -197,12 +197,14 @@ endif
 
 if (step == 1) then
    !open(27, file='src/assets/wind16.dat')
-   open(27, file='src/assets/test-wind1001.dat')
-   do n = 1, 1024
+   open(27, file='src/assets/mywind.dat')
+   do n = 1, 2048
       read(27,*) rss(n), dss(n), pss(n), uss(n), css(n)
    enddo
    close(27)
 endif
+
+if (mype==0) write(*,*) 'asdf', rss(1:5)/zxc(1)
 
 if (step == 3) then
    open(27,file='x060c')
@@ -251,6 +253,14 @@ do i = 1, imax
       kap(i) = kap3
    endif
 enddo
+
+
+!  set min rad
+i = 1
+do while (zxc(i) < sep)
+   i = i + 1
+enddo
+minrad = zdx(i)/2.0
 
 
 if (step == 1) then
@@ -338,18 +348,21 @@ if (step == 1) then
       do i = 1, 6
          rad = zxc(1) - i*zdx(1)
          nabove = 2
-         do while (rss(nabove) < rad .and. nabove < 1024)
+         do while (rss(nabove) < rad .and. nabove < 2048)
             nabove = nabove + 1
          enddo
          nbelow = nabove - 1
 
          c1 = (rss(nabove)-rad)/(rss(nabove)-rss(nbelow))
          c2 = (rad-rss(nbelow))/(rss(nabove)-rss(nbelow))
-
+if (mype==0) write(*,*) zdx(1)/zxc(1), rss(1)/rad, rad
          uin(i,1,1) = c1*uss(nbelow) + c2*uss(nabove)
          rin(i,1,1) = c1*dss(nbelow) + c2*dss(nabove)
          pin(i,1,1) = c1*pss(nbelow) + c2*pss(nabove)
       enddo
+      if (mype == 0) write(*,*) 'uin:', uin(:,1,1)
+      if (mype == 0) write(*,*) 'rin:', rin(:,1,1)
+      if (mype == 0) write(*,*) 'pin:', pin(:,1,1)
    endif
 
 else if (step == 2) then ! ------------------------------------------
