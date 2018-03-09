@@ -164,6 +164,7 @@ do k = 1, ks
    endif
 
    if (ongrid(myj,myk) == 0) call ppmlr 
+   if (ongrid(myj,myk) == 0) call radiate
 
    ! Put updated values back into 3D arrays, dropping ghost zones
    do i = 1, imax
