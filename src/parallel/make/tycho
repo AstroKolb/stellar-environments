@@ -28,7 +28,7 @@ LIBS=   -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf
 
 VHOBJS = vh1mods.o zonemods.o dtcon.o dump.o evolve.o flatten.o forces.o \
          init.o perlin.o parabola.o ppmlr.o volume.o prin.o remap.o riemann.o \
-         states.o sweepx1.o sweepx2.o sweepy.o sweepz.o vhone.o read.o \
+         states.o sweepx1.o sweepx2.o sweepy.o sweepz.o vhone.o read.o radiate.o \
          corner.o boundaryY.o  boundaryZ.o  boundaryYsetup.o  boundaryZsetup.o \
          boundaryR.o boundaryRsetup.o
 
@@ -75,6 +75,7 @@ forces.o:   forces.f90   global.mod sweeps.mod sweepsize.mod
 ppm.o:      ppm.f90      global.mod sweeps.mod sweepsize.mod
 remap.o:    remap.f90    global.mod sweeps.mod sweepsize.mod
 states.o:   states.f90   global.mod sweeps.mod sweepsize.mod
+radiate.o:  radiate.f90  global.mod sweeps.mod sweepsize.mod
 parabola.o: parabola.f90 sweepsize.mod
 riemann.o:  riemann.f90  sweepsize.mod
 
